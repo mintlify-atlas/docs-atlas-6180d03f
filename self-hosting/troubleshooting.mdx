@@ -1,0 +1,159 @@
+---
+title: "Troubleshooting"
+description: "Solutions for common issues when self-hosting CCReward"
+---
+
+This page covers the most common issues encountered when running a self-hosted instance of CCReward, along with their causes and solutions.
+
+For setup reference, see [Environment variables](/self-hosting/environment-variables) and [Firebase setup](/self-hosting/firebase-setup).
+
+<AccordionGroup>
+  <Accordion title="Authentication errors on sign-in">
+    **Symptoms:** Clicking "Sign in with Google" does nothing, shows an error popup, or the sign-in flow fails with a Firebase error code such as `auth/configuration-not-found` or `auth/unauthorized-domain`.
+
+    **Causes and fixes:**
+
+    1. **Google Sign-in is not enabled.** In the Firebase Console, navigate to **Authentication** > **Sign-in method** and confirm that **Google** is toggled on.
+
+    2. **Anonymous Authentication is not enabled.** The app requires anonymous auth for unauthenticated users. Confirm that **Anonymous** is also enabled under the same sign-in method page.
+
+    3. **Unauthorised domain.** Firebase only allows OAuth redirects from domains listed in the **Authentication** > **Settings** > **Authorized domains** list. Add your local development domain (`localhost`) and any production domain you are using.
+
+    4. **Missing or incorrect `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`.** Verify that the value in `.env.local` matches the `authDomain` from your Firebase project configuration exactly.
+
+    5. **Missing `NEXT_PUBLIC_GOOGLE_CLIENT_ID`.** This variable is required for Google Sign-in and is validated by `src/envValidator.js` at startup. Check the browser console for `Missing required environment variables` warnings.
+  </Accordion>
+
+  <Accordion title="Database access denied (Firestore permission errors)">
+    **Symptoms:** Data does not load, the browser console shows `FirebaseError: Missing or insufficient permissions`, or user-specific data cannot be saved.
+
+    **Causes and fixes:**
+
+    1. **Security rules deny access.** Firestore databases created in production mode deny all reads and writes by default. Publish security rules that allow authenticated users to access their own data. See the [Firestore security rules](/self-hosting/firebase-setup#firestore-security-rules) section.
+
+    2. **User is not authenticated.** The security rules require `request.auth != null`. If the user is not signed in (even anonymously), all writes will be rejected. Confirm that Anonymous Authentication is enabled.
+
+    3. **Firestore is not enabled.** Navigate to **Firestore Database** in the Firebase Console and confirm the database has been created.
+  </Accordion>
+
+  <Accordion title="Missing environment variables warning at startup">
+    **Symptoms:** The browser console shows:
+    ```
+    [Config] Missing Firebase/Google env vars. Auth features may be unavailable.
+    ```
+    Authentication features do not work.
+
+    **Causes and fixes:**
+
+    The `src/envValidator.js` module validates these variables at startup:
+    - `NEXT_PUBLIC_FIREBASE_API_KEY`
+    - `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
+    - `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
+    - `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
+    - `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
+    - `NEXT_PUBLIC_FIREBASE_APP_ID`
+    - `NEXT_PUBLIC_GOOGLE_CLIENT_ID`
+
+    1. Confirm that `.env.local` exists in the project root and contains all of the above variables with real values (not placeholder text like `xxx`).
+    2. Restart the development server after editing `.env.local` — Next.js does not hot-reload environment variable changes.
+    3. Check for typos in variable names. Variable names are case-sensitive.
+
+    See [Environment variables](/self-hosting/environment-variables) for the complete reference.
+  </Accordion>
+
+  <Accordion title="Region not initialised error">
+    **Symptoms:** The rewards calculator fails with:
+    ```
+    Region not initialized. Please refresh the page and try again.
+    ```
+    Or API requests are silently skipped with a console warning:
+    ```
+    Region not initialized in localStorage
+    ```
+
+    **Causes and fixes:**
+
+    The app stores the user's selected region (`IN` or `SG`) in `localStorage` under the key `app-region`. API requests are blocked until this value is present.
+
+    1. **Refresh the page.** The region is typically set during the initial app load. A hard refresh (`Ctrl+Shift+R` / `Cmd+Shift+R`) usually resolves this.
+    2. **Clear localStorage.** Open DevTools > **Application** > **Local Storage**, find your origin, and delete the `app-region` key. Reload the page to let the app re-initialise it.
+    3. **Check for JavaScript errors during load.** If the region initialisation code throws an error before writing to localStorage, the region will never be set. Look for unrelated errors earlier in the console.
+  </Accordion>
+
+  <Accordion title="Exchange rates unavailable">
+    **Symptoms:** Calculations involving foreign currencies fail with:
+    ```
+    Exchange rates are temporarily unavailable. Please try again later or use your local currency.
+    ```
+
+    **Causes and fixes:**
+
+    This error is returned by the backend API with HTTP status `503` and error code `EXCHANGE_RATES_UNAVAILABLE`. It indicates that the upstream exchange rate provider is temporarily unreachable.
+
+    1. **Wait and retry.** This is a transient error. Try the calculation again after a few minutes.
+    2. **Use local currency.** If you do not need foreign currency conversion, switch to INR (for India) or SGD (for Singapore) to avoid the exchange rate lookup entirely.
+    3. **Check backend availability.** If the error persists for an extended period, the issue may be with the `NEXT_PUBLIC_API_BASE_URL` endpoint. Verify that your API backend is reachable.
+  </Accordion>
+
+  <Accordion title="Daily limit reached">
+    **Symptoms:** API calls fail with:
+    ```
+    Daily limit reached. Please use the CCReward app for more.
+    ```
+    Or a more general rate-limit message:
+    ```
+    Too many requests. Limited to {limit} per {period}.
+    ```
+
+    **Causes and fixes:**
+
+    The CCReward API enforces per-user rate limits. When the daily quota is exhausted, the API returns HTTP `429`.
+
+    1. **Wait until the next day.** The daily limit resets at midnight UTC.
+    2. **Use the CCReward mobile app.** The [iOS](https://apps.apple.com/in/app/ccreward/id6736835206) and [Android](https://play.google.com/store/apps/details?id=app.ccreward) apps have higher limits.
+    3. **Check your API key limits.** If you are running a self-hosted backend, review the rate-limit configuration on your API workers.
+  </Accordion>
+
+  <Accordion title="Network errors and request timeouts">
+    **Symptoms:** API calls fail with:
+    ```
+    Network error. Please check your internet connection.
+    ```
+    Or:
+    ```
+    Request timed out. Please check your internet connection and try again.
+    ```
+
+    **Causes and fixes:**
+
+    The API client (`src/core/services/api.js`) has a 10-second timeout and retries up to 3 times with exponential backoff on network errors and idempotent request failures.
+
+    1. **Check your internet connection.** A timeout (`ECONNABORTED`) or a missing response (`error.request` set but `error.response` absent) typically indicates a connectivity issue on the client side.
+    2. **Verify `NEXT_PUBLIC_API_BASE_URL`.** Confirm the value points to a reachable API endpoint. Test it directly with `curl`:
+       ```bash
+       curl -I https://your-api-base-url/v4/bank
+       ```
+    3. **Check Cloudflare Worker logs.** If you are running a self-hosted backend, use `wrangler tail` to inspect incoming requests and errors in real time.
+    4. **Firewall or proxy blocking requests.** If you are behind a corporate network, outbound requests to the API origin may be blocked.
+  </Accordion>
+
+  <Accordion title="Static data fetch fails during build">
+    **Symptoms:** Running `npm run build`, `npm run deploy:dev`, or `npm run deploy:prod` fails or shows:
+    ```
+    STATIC_DATA_API_KEY is not set. Skipping data fetch.
+    ```
+    Or the build exits with:
+    ```
+    Error fetching static data: ...
+    ```
+
+    **Causes and fixes:**
+
+    The `scripts/fetch-static-data.js` script downloads static JSON files (bank lists, card data, transfer partners) from the CCReward API before the build.
+
+    1. **Missing `STATIC_DATA_API_KEY`.** If this variable is not set, the script skips the fetch and exits successfully. The build will complete, but card and bank data may be absent. Set the variable in `.env.local`.
+    2. **Missing `NEXT_PUBLIC_API_BASE_URL`.** Both variables must be present for the fetch to run.
+    3. **API rate limits.** The script retries up to 3 times with exponential backoff on `429` and `5xx` responses. If all retries are exhausted, the build fails. Wait a few minutes and retry.
+    4. **Network connectivity.** Ensure the build machine can reach `NEXT_PUBLIC_API_BASE_URL` over HTTPS.
+  </Accordion>
+</AccordionGroup>

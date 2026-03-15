@@ -1,0 +1,81 @@
+---
+title: "My cards"
+description: "Manage your personal credit card portfolio for personalised recommendations"
+---
+
+My Cards is your personal credit card portfolio. Saving your cards here means the [best card finder](/features/best-card-finder) loads them automatically, so you never have to re-select them before a comparison. Cards are stored in Firebase and synced across all devices where you are signed in.
+
+## Signed in vs anonymous usage
+
+<Tabs>
+  <Tab title="Signed in">
+    Sign in with Google to unlock the full My Cards experience:
+
+    - Save an unlimited number of cards to your portfolio
+    - Cards are persisted in Firebase and available on any device
+    - The best card finder pre-loads your saved cards
+    - You can optionally record the card network (Visa, Mastercard, etc.)
+    - Share your portfolio as an image
+
+    <Note>
+      My Cards requires Firebase authentication via Google Sign-In. Without a signed-in account, card saving is not available and the portfolio cannot be accessed.
+    </Note>
+  </Tab>
+  <Tab title="Anonymous">
+    Without signing in you can still:
+
+    - Use the reward calculator to calculate rewards for any card
+    - Use the MCC lookup tool
+    - Browse the transfer partners matrix
+
+    Card saving, the best card finder (which requires a portfolio), and cross-device sync are not available to anonymous users. Sign in with Google to access these features.
+  </Tab>
+</Tabs>
+
+## Adding a card
+
+<Steps>
+  <Step title="Open the Add Card dialog">
+    On the My Cards page, click the **+** speed-dial button in the bottom-right corner of the screen and select **Add New Card**.
+  </Step>
+  <Step title="Select a bank">
+    Start typing in the **Select Bank** field to search your issuing bank. The list is filtered to your active region (India or Singapore).
+  </Step>
+  <Step title="Select a card">
+    After choosing a bank, the **Select Card** field populates with that bank's supported cards. Choose the card you want to save.
+  </Step>
+  <Step title="Set the card network (optional)">
+    Optionally select the card network — Visa, Mastercard, American Express, etc. This is stored alongside the card but does not affect reward calculations.
+  </Step>
+  <Step title="Save the card">
+    Click **Add Card**. The card is written to Firebase (source of truth) and also synced to the backend API. It appears immediately in your portfolio.
+  </Step>
+</Steps>
+
+## Managing existing cards
+
+From the card list you can:
+
+- **Edit** — update the card network or other optional details via the card detail modal.
+- **Delete** — remove a card from your portfolio. The deletion is applied to both Firebase and the backend API.
+
+## How saved cards improve best card finder
+
+When you open the best card finder while signed in, your saved cards are fetched from Firebase and passed to the comparison engine automatically. You need at least two cards in your portfolio for the comparison to run. The more cards you save, the more useful the ranked results become — the finder shows every card's earn rate side by side so you can pick the best one before you spend.
+
+## Cross-device sync
+
+Because Firebase is the source of truth, your card portfolio is available on any device where you sign in with the same Google account. Changes (additions, edits, deletions) are reflected immediately on the current device and visible on other devices on the next page load.
+
+## API endpoints
+
+My Cards operations are backed by the following v4 API endpoints, all of which require a valid Firebase JWT:
+
+| Operation | Method | Endpoint |
+|-----------|--------|----------|
+| Add a card | `POST` | `/v4/user/cards` |
+| List saved cards | `GET` | `/v4/user/cards` |
+| Update a card | `PATCH` | `/v4/user/cards` |
+| Delete a card | `DELETE` | `/v4/user/cards` |
+
+Firestore is the primary store; the API endpoints are kept in sync as a secondary write. If the API call fails, the Firestore write is still committed — the card will appear in your portfolio.

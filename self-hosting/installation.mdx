@@ -1,0 +1,106 @@
+---
+title: "Installation"
+description: "Clone and run CCReward locally"
+---
+
+This guide walks through cloning the repository, installing dependencies, and starting the local development server.
+
+<Info>
+  Before you begin, complete all steps in [Prerequisites](/self-hosting/prerequisites). You will also need your Firebase configuration values ready — see [Firebase setup](/self-hosting/firebase-setup) — and your environment variables configured as described in [Environment variables](/self-hosting/environment-variables).
+</Info>
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/aashishvanand/ccreward-web.git
+    cd ccreward-web
+    ```
+  </Step>
+
+  <Step title="Install dependencies">
+    Run the package installer. The `postinstall` script automatically installs the optional `sharp` dependency for image optimisation.
+
+    <CodeGroup>
+
+    ```bash npm
+    npm install
+    ```
+
+    ```bash yarn
+    yarn install
+    ```
+
+    ```bash pnpm
+    pnpm install
+    ```
+
+    </CodeGroup>
+
+    <Note>
+      The `postinstall` script runs `npm install --include=optional sharp --legacy-peer-deps` automatically. If you see a warning about optional dependencies, this is expected.
+    </Note>
+  </Step>
+
+  <Step title="Set up environment variables">
+    Create a `.env.local` file in the project root and populate it with your Firebase and Cloudflare configuration values.
+
+    ```bash
+    cp .env.local.example .env.local  # if an example file is present, otherwise create it manually
+    ```
+
+    For the full list of required and optional variables, see [Environment variables](/self-hosting/environment-variables).
+
+    For step-by-step instructions on obtaining your Firebase configuration values, see [Firebase setup](/self-hosting/firebase-setup).
+
+    <Warning>
+      Never commit `.env.local` to version control. The repository's `.gitignore` already excludes this file, but verify this before pushing.
+    </Warning>
+  </Step>
+
+  <Step title="Start the development server">
+    <CodeGroup>
+
+    ```bash npm
+    npm run dev
+    ```
+
+    ```bash yarn
+    yarn dev
+    ```
+
+    ```bash pnpm
+    pnpm dev
+    ```
+
+    </CodeGroup>
+
+    The app will be available at [http://localhost:3000](http://localhost:3000).
+
+    <Note>
+      The development server is powered by `vinext dev`. It does not run the `prebuild:site` script (static data fetch and sitemap generation), which only runs during a full build or deployment.
+    </Note>
+  </Step>
+</Steps>
+
+## Running a full build locally
+
+To test a production build before deploying:
+
+```bash
+npm run build
+```
+
+This runs the full pipeline:
+1. `fetch-data` — downloads static card and bank data from the CCReward API
+2. `generate:sitemap` — generates the sitemap
+3. `vinext build` — compiles the Next.js application
+
+<Warning>
+  The `fetch-data` step requires `STATIC_DATA_API_KEY` and `NEXT_PUBLIC_API_BASE_URL` to be set in `.env.local`. Without them, the script exits with a warning and skips the data fetch.
+</Warning>
+
+## Next steps
+
+- Configure [Firebase authentication and Firestore](/self-hosting/firebase-setup)
+- Review all [environment variables](/self-hosting/environment-variables)
+- [Deploy to Cloudflare](/self-hosting/cloudflare-deployment)

@@ -1,0 +1,65 @@
+---
+title: "Adding banks and cards"
+description: "How to request or contribute new bank and card data to CCReward"
+---
+
+CCReward currently supports cards from banks across India (AMEX, AU, Axis, BOB, Canara, DBS, Equitas, Federal, HDFC, HSBC, ICICI, IDBI, IDFCFirst, IndusInd, Kotak, OneCard, PNB, RBL, SBI, SBM, SC, Union, YesBank) and Singapore (AMEX, BOC, CIMB, Citi, DBS, DCS, GXS, HSBC, Maybank, Maribank, OCBC, POSB, SC, TrustBank, UOB). If your bank or card is not listed, you can request it using either of the two methods below.
+
+## Choose a submission method
+
+<Tabs>
+  <Tab title="In-app submission">
+    The fastest way to report a missing bank or card is through the in-app form. You do not need a GitHub account.
+
+    <Steps>
+      <Step title="Open the Reward Calculator">
+        Go to [ccreward.app](https://ccreward.app) and navigate to the Reward Calculator.
+      </Step>
+      <Step title="Open the report dialog">
+        Click the **"Bank or Card Missing?"** button to open the **Report Missing Info** dialog.
+      </Step>
+      <Step title="Select the report type">
+        On the first step of the form, choose **Missing Bank or Card** from the options.
+      </Step>
+      <Step title="Enter the bank and card name">
+        On the second step, fill in:
+        - **Bank Name** — the full name of the issuing bank (e.g., "HDFC Bank")
+        - **Card Name** — the full product name of the card (e.g., "Infinia Credit Card")
+      </Step>
+      <Step title="Submit">
+        Click **Submit**. Your report goes directly to the maintainers for review.
+      </Step>
+    </Steps>
+
+    You can also report a missing MCC (Merchant Category Code) through the same form by choosing **Missing MCC** and providing the MCC number and merchant name.
+  </Tab>
+  <Tab title="GitHub issue">
+    If you prefer to submit via GitHub, or if you want to provide additional detail (such as the full reward structure), open an issue on the repository.
+
+    1. Go to [github.com/aashishvanand/ccreward-web/issues](https://github.com/aashishvanand/ccreward-web/issues).
+    2. Click **New issue**.
+    3. Use a title like: `Add: [Bank Name] [Card Name]`.
+    4. In the body, include all the information described in the [card details](#what-information-to-include) section below.
+
+    A GitHub issue is the preferred path when you have detailed reward structure information to share, since it gives maintainers more context to implement the card accurately.
+  </Tab>
+</Tabs>
+
+## What information to include
+
+The more detail you provide, the faster a card can be added. For a complete submission, include the following:
+
+| Field | Description | Example |
+|---|---|---|
+| Bank name | Full name of the issuing bank | HDFC Bank |
+| Card name | Full product name of the card | Infinia Credit Card |
+| Reward type | Points, cashback, or miles | Points |
+| Base earn rate | Default earn rate for all spend | 5 points per ₹150 |
+| Accelerated categories | Higher earn rates for specific spend categories | 10x on dining, travel |
+| MCC codes | Merchant Category Codes for accelerated categories | 5812 (Eating Places) |
+| Caps and limits | Monthly or annual earn caps per category | 1000 points/month on dining |
+| International spend rate | Earn rate for transactions in foreign currencies | 2x on international spend |
+
+<Tip>
+  If you know the MCC codes for accelerated earn categories, include them in your submission. MCC codes allow CCReward to match transactions precisely and show the correct earn rate. You can look up MCCs at merchant documentation or payment network references.
+</Tip>

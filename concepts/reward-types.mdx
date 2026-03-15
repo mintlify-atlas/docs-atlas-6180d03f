@@ -1,0 +1,56 @@
+---
+title: "Reward types"
+description: "CCReward supports multiple reward currencies: points, cashback, and miles"
+---
+
+Credit cards in India and Singapore earn rewards in different currencies depending on the card and bank. CCReward handles all three major reward types and normalizes them so you can compare cards accurately.
+
+<Columns cols={3}>
+  <Card title="Points" icon="star">
+    Bank-specific reward points that accumulate in your card's loyalty program. Redeemable for vouchers, merchandise, statement credits, or travel bookings through the bank's portal.
+  </Card>
+  <Card title="Cashback" icon="indian-rupee">
+    A direct monetary value credited to your account, expressed as a percentage of the transaction amount. Cashback has no expiry or redemption complexity — it reduces your bill directly.
+  </Card>
+  <Card title="Miles" icon="plane">
+    Airline loyalty currency earned through a card's miles program or via transfer from bank reward points. Used to redeem flights, upgrades, and other travel benefits with airline partners.
+  </Card>
+</Columns>
+
+## Points
+
+Points are the most common reward type in both India and Singapore. Each bank operates its own points program with its own name (for example, HDFC Reward Points, Axis eDGE Rewards, DBS Points). Key characteristics:
+
+- Earn rates are typically expressed per unit of spend (e.g. 5 points per ₹100, or 4 points per S$1).
+- Points are redeemable through the bank's rewards portal for gift vouchers, merchandise, travel bookings, or statement credits.
+- Redemption value varies by bank and redemption category — a point is not worth the same across all programs.
+- Some cards cap accelerated earn per statement cycle.
+
+## Cashback
+
+Cashback cards return a percentage of your spend as a monetary credit. Cashback is straightforward to value because it has a fixed monetary equivalent (1% cashback on ₹1,000 = ₹10 back).
+
+- Cashback may be credited monthly, quarterly, or upon reaching a minimum threshold.
+- Some cards apply different cashback rates to different MCCs.
+- Cashback is the easiest reward type to compare across cards because no conversion is needed.
+
+## Miles
+
+Miles-earning cards accumulate airline loyalty currency, either directly into a frequent flyer account or as bank miles that can be transferred to an airline partner. Miles are especially valuable for premium cabin redemptions.
+
+- Earn rates are expressed as miles per unit of spend (e.g. 1.2 miles per S$1).
+- **Transfer partners**: Many bank miles programs allow you to transfer points to multiple airline partners at defined ratios. For example, a bank program might transfer at 1:1 to one airline and 2:1 to another. CCReward surfaces transfer partner information where available.
+- Miles typically expire if the account is inactive for a set period.
+
+## How CCReward normalizes reward structures
+
+Different cards define their reward rules in different ways. Some cards have flat rates, others have tiered rates based on spend thresholds, and others vary by MCC, merchant, or whether the transaction is domestic or international.
+
+CCReward's calculation engine applies your card's specific rules to the transaction you enter, including:
+
+- MCC-based rate selection (accelerated vs base)
+- International spend adjustments
+- Card-specific conditions surfaced as additional input prompts in the calculator
+- Rounding rules and minimum spend requirements per the card's reward terms
+
+The result is shown in the card's native reward currency (points, cashback amount, or miles), so you always see a meaningful, comparable number.

@@ -1,0 +1,73 @@
+---
+title: "Reporting issues"
+description: "How to report bugs, incorrect reward calculations, or security vulnerabilities"
+---
+
+This page explains how to report different types of problems in CCReward. Using the right channel helps maintainers triage and fix issues faster.
+
+<Warning>
+  Never file security vulnerabilities as public GitHub issues. Security reports must be sent by email to [security@ccreward.app](mailto:security@ccreward.app) so they can be handled confidentially before any public disclosure.
+</Warning>
+
+## Issue types
+
+<AccordionGroup>
+  <Accordion title="Incorrect reward calculation">
+    If the reward points or cashback amount shown in the calculator is wrong for your card and transaction, use the in-app report form.
+
+    **How to report:**
+
+    1. Run a calculation in the Reward Calculator that produces the incorrect result.
+    2. Click the **"Report Incorrect Reward Points"** button (visible after a calculation is shown).
+    3. In the dialog, describe the issue in the **Your Feedback** field (up to 500 characters). Include:
+       - What result you expected
+       - What result the app showed
+       - Any relevant details (e.g., the card T&Cs or bank website URL that shows the correct rate)
+    4. Click **Submit Report**.
+
+    The form automatically captures the current calculator state (selected bank, card, MCC, and spend amount) alongside your feedback, giving maintainers the context needed to reproduce the issue.
+  </Accordion>
+
+  <Accordion title="Missing bank or card">
+    If your bank or card is not available in CCReward, you can request it through the in-app form or via a GitHub issue.
+
+    - **In-app:** Click **"Bank or Card Missing?"** in the Reward Calculator, choose **Missing Bank or Card**, and enter the bank name and card name.
+    - **GitHub issue:** Open an issue at [github.com/aashishvanand/ccreward-web/issues](https://github.com/aashishvanand/ccreward-web/issues) with the bank name, card name, and as much reward structure detail as you have.
+
+    For full guidance on what information to include, see [Adding banks and cards](/contributing/adding-banks-cards).
+  </Accordion>
+
+  <Accordion title="Bug reports">
+    For general bugs — broken UI, errors loading the page, incorrect MCC lookups, or any other unexpected behavior — open a GitHub issue.
+
+    **How to write a good bug report:**
+
+    Go to [github.com/aashishvanand/ccreward-web/issues](https://github.com/aashishvanand/ccreward-web/issues) and include the following in your issue:
+
+    - **Steps to reproduce** — the exact sequence of actions that triggers the bug
+    - **Expected behavior** — what you expected to happen
+    - **Actual behavior** — what actually happened, including any error messages
+    - **Browser and device** — browser name and version, operating system, and whether you are on desktop or mobile
+
+    A minimal, reproducible example is the single most useful thing you can provide. If the bug only happens under specific conditions (e.g., a particular bank/card combination), include those details.
+  </Accordion>
+
+  <Accordion title="Security vulnerabilities">
+    If you believe you have found a security issue in CCReward, please disclose it privately.
+
+    **Disclosure process:**
+
+    1. Email [security@ccreward.app](mailto:security@ccreward.app) with a descriptive subject line and a detailed description of the issue. Avoid excessive technical jargon where possible.
+    2. You will receive a response within **48 hours** acknowledging your report.
+    3. The maintainer will investigate the issue and keep you informed of progress toward a fix.
+    4. Once the issue is resolved, you may be asked to validate the solution before public disclosure.
+
+    **Responsible disclosure guidelines:**
+
+    - Report as soon as possible after discovery.
+    - Allow a reasonable amount of time for the issue to be fixed before any public or third-party disclosure.
+    - Make a good faith effort to avoid privacy violations, data destruction, or service disruption while investigating.
+
+    Only the latest major version of ccreward-web is actively supported with security updates.
+  </Accordion>
+</AccordionGroup>

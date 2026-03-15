@@ -1,0 +1,77 @@
+---
+title: "Contributing"
+description: "How to contribute to CCReward — from bug reports to new card data"
+---
+
+CCReward is an open source project and welcomes contributions of all kinds. Whether you spotted a missing bank, found a calculation error, or want to improve the code, there is a clear path for every type of contribution.
+
+## Ways to contribute
+
+<CardGroup cols={2}>
+  <Card title="Report missing banks or cards" icon="credit-card">
+    Use the in-app "Bank or Card Missing?" button in the Reward Calculator to submit a missing bank, card, or MCC directly from the app.
+  </Card>
+  <Card title="Report incorrect calculations" icon="triangle-alert">
+    If the reward points or cashback shown for a transaction are wrong, use the in-app report form to send details to the maintainers.
+  </Card>
+  <Card title="Submit code contributions" icon="code">
+    Fork the repository, make your changes on a feature branch, and open a pull request on GitHub.
+  </Card>
+  <Card title="Report security vulnerabilities" icon="shield">
+    Security issues must be disclosed privately by email — never as a public GitHub issue. See [Reporting issues](/contributing/reporting-issues) for details.
+  </Card>
+</CardGroup>
+
+## Code contribution workflow
+
+All code changes go through a standard GitHub pull request process.
+
+<Steps>
+  <Step title="Fork the repository">
+    Visit [github.com/aashishvanand/ccreward-web](https://github.com/aashishvanand/ccreward-web) and click **Fork** to create your own copy of the repository.
+  </Step>
+  <Step title="Create a feature branch">
+    Create a descriptive branch for your change:
+
+    ```bash
+    git checkout -b feature/AmazingFeature
+    ```
+  </Step>
+  <Step title="Commit your changes">
+    Write a clear commit message describing what you added or fixed:
+
+    ```bash
+    git commit -m 'Add some AmazingFeature'
+    ```
+  </Step>
+  <Step title="Push to your branch">
+    Push the branch to your fork on GitHub:
+
+    ```bash
+    git push origin feature/AmazingFeature
+    ```
+  </Step>
+  <Step title="Open a Pull Request">
+    Go to your fork on GitHub and click **Compare & pull request**. Describe what your change does and why, then submit it for review.
+  </Step>
+</Steps>
+
+## Attribution requirements
+
+<Note>
+  Regardless of whether you use this project under the open source or commercial license, attribution is required. Any use, modification, or distribution of CCReward must include:
+
+  1. The project name: **ccreward.app**
+  2. The GitHub repository URL: [https://github.com/aashishvanand/ccreward-web](https://github.com/aashishvanand/ccreward-web)
+  3. The name of the original author: **Aashish Vivekanand**
+
+  Example attribution:
+
+  ```text
+  This project is based on ccreward (https://github.com/aashishvanand/ccreward-web) by Aashish Vivekanand.
+  ```
+</Note>
+
+## Licensing
+
+CCReward is available under a dual license. Non-commercial use is covered by the open source license. Commercial use requires a separate commercial license — contact the author for details.

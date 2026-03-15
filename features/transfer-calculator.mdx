@@ -1,0 +1,59 @@
+---
+title: "Transfer calculator"
+description: "Convert credit card reward points to airline miles or hotel loyalty currencies"
+---
+
+Some credit cards earn points in a proprietary currency (for example, HDFC Reward Points or Amex Membership Rewards) that can be transferred to airline frequent flyer programmes or hotel loyalty programmes. The transfer calculator shows you exactly how many miles or points you receive at each available transfer partner for a given number of source points, along with the estimated monetary value and the transfer time.
+
+<Info>
+  Point transfers to airline and hotel programmes are typically one-way and irreversible. Once transferred, the points are deducted from your credit card account and credited to the loyalty programme — they cannot be moved back. Confirm the destination programme rules before initiating a transfer.
+</Info>
+
+## Concepts
+
+**Transfer ratio** — each card-to-partner combination has its own conversion ratio. A 2:1 ratio means 2 credit card points become 1 airline mile. Ratios vary by partner and sometimes by card tier, so the calculator fetches them from the backend rather than applying a fixed formula.
+
+**Transfer partners** — partners are separated into airlines (identified by IATA code) and hotels (identified by brand name). Not every card transfers to every partner; results only show partners supported by the selected card.
+
+**Transfer time** — the time it takes for points to appear in the destination loyalty account. This is shown alongside each partner result.
+
+## How it works
+
+<Steps>
+  <Step title="Sign in">
+    The transfer calculator requires a signed-in account. If you are not signed in, a warning banner appears and the **Calculate Transfers** button is disabled.
+  </Step>
+  <Step title="Select a bank">
+    Choose the issuing bank of the card whose points you want to transfer.
+  </Step>
+  <Step title="Select a card">
+    Choose the specific card. The card list is filtered to the selected bank and your region.
+  </Step>
+  <Step title="Enter the points amount">
+    Type the number of points you want to transfer. The minimum value is 1.
+  </Step>
+  <Step title="Click Calculate Transfers">
+    Click **Calculate Transfers**. The backend looks up the card's transferable points currency and returns all available airline and hotel partners with their converted amounts.
+  </Step>
+  <Step title="Review partner results">
+    Results are grouped into **Airlines** and **Hotels** sections. Each partner entry shows:
+
+    - Partner name and brand
+    - Points received after conversion
+    - Estimated value in local currency
+    - Value per point in local currency
+    - Expected transfer time
+  </Step>
+</Steps>
+
+## Transfer partners matrix
+
+Below the calculator form, a **Transfer Partners Matrix** table shows a full grid of which banks support which airline and hotel partners for your region. Use the Airlines / Hotels tab to switch views. A checkmark in a cell means a transfer path exists; hovering the checkmark shows the source points currency.
+
+## Usage limits
+
+The transfer calculator allows **10 calculations per day** on the free web tier. A usage badge shows remaining quota when you are signed in.
+
+## Supported regions
+
+Transfer partner data is maintained separately for India and Singapore. The available banks, cards, and partners change depending on your active region setting.

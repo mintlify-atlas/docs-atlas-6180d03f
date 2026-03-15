@@ -1,0 +1,153 @@
+---
+title: "Cloudflare deployment"
+description: "Deploy CCReward to Cloudflare Workers and Pages"
+---
+
+CCReward is deployed to [Cloudflare Workers](https://workers.cloudflare.com) using [vinext](https://github.com/nicholasgasior/vinext) (a Vite-based Next.js adapter for Cloudflare) and [Wrangler](https://developers.cloudflare.com/workers/wrangler/), Cloudflare's CLI tool.
+
+The project defines two deployment environments in `wrangler.json`: `dev` (staging) and `prod` (production).
+
+<Note>
+  Every deployment command (`deploy:dev` and `deploy:prod`) automatically runs the full `prebuild:site` pipeline before deploying. This pipeline fetches the latest static card and bank data (`npm run fetch-data`) and regenerates the sitemap (`npm run generate:sitemap`). Make sure `STATIC_DATA_API_KEY` and `NEXT_PUBLIC_API_BASE_URL` are set in your environment before deploying.
+</Note>
+
+## Prerequisites
+
+- A Cloudflare account with Workers access
+- Wrangler CLI installed and authenticated
+- All [environment variables](/self-hosting/environment-variables) configured
+
+## Steps
+
+<Steps>
+  <Step title="Install the Wrangler CLI">
+    ```bash
+    npm install -g wrangler
+    ```
+
+    Verify the installation:
+
+    ```bash
+    wrangler --version
+    ```
+  </Step>
+
+  <Step title="Authenticate with Cloudflare">
+    ```bash
+    wrangler login
+    ```
+
+    This opens a browser window to authorise Wrangler to your Cloudflare account.
+  </Step>
+
+  <Step title="Review wrangler.json">
+    The `wrangler.json` at the project root defines the Worker name, assets directory, bindings, and environment-specific routes.
+
+    Key configuration values:
+
+    ```json
+    {
+      "name": "ccreward-web",
+      "main": "./worker/index.ts",
+      "compatibility_date": "2026-03-06",
+      "compatibility_flags": ["nodejs_compat"],
+      "assets": {
+        "directory": "./dist/client",
+        "binding": "ASSETS"
+      },
+      "images": {
+        "binding": "IMAGES"
+      },
+      "env": {
+        "dev": {
+          "name": "ccreward-web-dev",
+          "routes": [
+            { "pattern": "dev.ccreward.app", "custom_domain": true }
+          ]
+        },
+        "prod": {
+          "name": "ccreward-web-prod",
+          "routes": [
+            { "pattern": "ccreward.app", "custom_domain": true }
+          ]
+        }
+      }
+    }
+    ```
+
+    For your own deployment, update the `routes` patterns in the `dev` and `prod` environments to match your own domain.
+
+    <Note>
+      The `dev` environment uses a KV namespace (`NEXT_CACHE_WORKERS_KV`) and two R2 buckets (`ccreward-next-cache-dev` and `ccreward`). The `prod` environment uses separate KV and R2 resources. Create these in your Cloudflare dashboard and update the `id` and `bucket_name` values in `wrangler.json` accordingly.
+    </Note>
+  </Step>
+
+  <Step title="Deploy to the dev environment">
+    ```bash
+    npm run deploy:dev
+    ```
+
+    This command:
+    1. Removes any stale Wrangler deploy artifacts (`rm -rf .wrangler/deploy`)
+    2. Runs `fetch-data` and `generate:sitemap` (the `prebuild:site` step)
+    3. Deploys the Worker to the `dev` environment via `vinext deploy --env dev`
+  </Step>
+
+  <Step title="Deploy to production">
+    ```bash
+    npm run deploy:prod
+    ```
+
+    This runs the same pipeline as `deploy:dev` but targets the `prod` environment.
+
+    <Warning>
+      Deploying to `prod` pushes directly to your production Worker. Test in the `dev` environment first.
+    </Warning>
+  </Step>
+</Steps>
+
+## Preview a build locally
+
+To run a local preview of the Worker (simulates the Cloudflare runtime):
+
+```bash
+npm run preview
+```
+
+This runs `vinext deploy --preview`, which builds the app and serves it locally using Wrangler's local simulation mode. No changes are deployed to Cloudflare.
+
+## Observability
+
+The `wrangler.json` enables Worker logs for both environments:
+
+```json
+"observability": {
+  "logs": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+    "invocation_logs": true,
+    "persist": true
+  }
+}
+```
+
+You can tail live logs from the Cloudflare dashboard or with Wrangler:
+
+```bash
+# Dev environment
+wrangler tail --env dev
+
+# Production environment
+wrangler tail --env prod
+```
+
+## Cloudflare resources
+
+Each deployment environment uses the following Cloudflare resources. Create these in your Cloudflare dashboard before deploying:
+
+| Resource | Dev binding | Prod binding |
+|---|---|---|
+| KV namespace | `NEXT_CACHE_WORKERS_KV` | `NEXT_CACHE_WORKERS_KV` |
+| R2 bucket (Next.js cache) | `ccreward-next-cache-dev` | `ccreward-next-cache-prod` |
+| R2 bucket (app data) | `ccreward` | `ccreward` |
+| Cloudflare Images | `IMAGES` | `IMAGES` |

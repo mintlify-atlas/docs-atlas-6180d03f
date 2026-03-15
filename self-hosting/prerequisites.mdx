@@ -1,0 +1,82 @@
+---
+title: "Prerequisites"
+description: "Requirements before you can self-host CCReward"
+---
+
+Before setting up a self-hosted instance of CCReward, make sure you have the following tools and accounts in place.
+
+<Warning>
+  Self-hosting CCReward requires you to create and configure your own Firebase project. Without it, authentication and data storage will not work. See [Firebase setup](/self-hosting/firebase-setup) for step-by-step instructions.
+</Warning>
+
+## Required tools
+
+<Steps>
+  <Step title="Node.js >= 22.0.0">
+    CCReward requires Node.js 22 or later. The project ships a `.nvmrc` file pinned to `22`.
+
+    Check your installed version:
+
+    ```bash
+    node --version
+    ```
+
+    If you need to install or switch versions, use [nvm](https://github.com/nvm-sh/nvm):
+
+    ```bash
+    nvm install 22
+    nvm use 22
+    ```
+  </Step>
+
+  <Step title="npm >= 10.0.0">
+    npm 10 or later is required. It ships with Node.js 22, so installing the correct Node version is usually sufficient.
+
+    Verify:
+
+    ```bash
+    npm --version
+    ```
+  </Step>
+
+  <Step title="Git">
+    Git is required to clone the repository.
+
+    ```bash
+    git --version
+    ```
+
+    Install Git from [git-scm.com](https://git-scm.com) if it is not already available.
+  </Step>
+
+  <Step title="A Firebase project">
+    CCReward uses Firebase for user authentication (Google Sign-in and Anonymous Authentication) and Firestore as its database.
+
+    You need a Google account to create a Firebase project at [console.firebase.google.com](https://console.firebase.google.com). The free Spark plan is sufficient for development.
+
+    See [Firebase setup](/self-hosting/firebase-setup) for the full configuration walkthrough.
+  </Step>
+
+  <Step title="A Cloudflare account">
+    CCReward is deployed to [Cloudflare Workers](https://workers.cloudflare.com) and uses [Cloudflare Images](https://developers.cloudflare.com/images/) for credit card artwork delivery.
+
+    You need a Cloudflare account and the Wrangler CLI installed globally:
+
+    ```bash
+    npm install -g wrangler
+    ```
+
+    See [Cloudflare deployment](/self-hosting/cloudflare-deployment) for full deployment instructions.
+  </Step>
+</Steps>
+
+## Checklist
+
+Before proceeding to [Installation](/self-hosting/installation), confirm that you have:
+
+- [ ] Node.js 22 or later installed (`node --version`)
+- [ ] npm 10 or later installed (`npm --version`)
+- [ ] Git installed
+- [ ] A Firebase project created (or plan to create one)
+- [ ] A Cloudflare account
+- [ ] The Wrangler CLI installed (`wrangler --version`)

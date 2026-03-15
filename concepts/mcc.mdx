@@ -1,0 +1,49 @@
+---
+title: "Merchant Category Codes (MCC)"
+description: "MCCs determine the reward rate your credit card applies to a transaction"
+---
+
+A Merchant Category Code (MCC) is a four-digit number assigned by payment networks (Visa, Mastercard, Amex) to every merchant. It identifies the type of business a merchant operates. When you swipe or tap your card, the MCC of the merchant is included in the transaction data, and your card's reward engine uses it to determine the applicable earn rate.
+
+## Why MCCs affect rewards
+
+Credit cards rarely apply a single flat rate to all spending. Most cards offer:
+
+- **Accelerated rates** on specific categories (e.g. 5x points on dining, 3x on groceries)
+- **Base rates** on everything else (e.g. 1x point per ₹100 or S$1 spent)
+
+The category is determined entirely by the MCC. Two merchants that feel similar to you (say, a supermarket café and a restaurant) can have different MCCs and therefore earn different reward rates on the same card.
+
+## Common MCC examples
+
+| MCC | Category |
+| --- | --- |
+| 5411 | Grocery stores and supermarkets |
+| 5812 | Eating places and restaurants |
+| 5541 | Service stations (petrol/gas) |
+| 5311 | Department stores |
+| 4121 | Taxicabs and rideshares |
+| 7011 | Hotels and lodging |
+| 4511 | Airlines |
+| 5047 | Medical and dental equipment |
+
+## How CCReward uses MCCs
+
+When you enter a transaction in the Reward Calculator, the MCC field is optional but recommended. Here is how it is used:
+
+1. You type a merchant name or MCC number in the search field (minimum 2 characters).
+2. CCReward queries its MCC database and returns matching entries, each showing the MCC code, category name, and a list of known merchants in that category.
+3. You select the matching entry.
+4. When you click **Calculate**, the selected MCC is passed to the rewards calculation API. The API looks up your card's reward rules for that MCC and applies the correct earn rate.
+
+If you leave the MCC field empty, the base reward rate for the card is used.
+
+<Tip>
+  Before making a large purchase, look up the merchant's MCC using the [MCC Lookup](/features/mcc-lookup) tool. Some cards have elevated rates for categories that are easy to miss, and confirming the MCC in advance helps you pick the right card for that spend.
+</Tip>
+
+## MCC Lookup tool
+
+The [MCC Lookup](/features/mcc-lookup) tool lets you search for any merchant by name to find its MCC and category details without starting a full calculation. Search by merchant name (e.g. "Netflix", "Amazon") to see the MCC code, category, and other merchants in the same group.
+
+If a merchant is missing or has incorrect information, you can report it directly from the MCC Lookup page using the **Report Issue** form.

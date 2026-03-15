@@ -1,0 +1,50 @@
+---
+title: "MCC lookup"
+description: "Find the Merchant Category Code for any merchant or business type"
+---
+
+A Merchant Category Code (MCC) is a four-digit number assigned by card networks to every merchant based on the type of goods or services they sell. Banks use MCCs to determine which earn rate applies to a transaction — for example, a card may offer 5× points on dining (MCC 5812) but only 1× on general retail.
+
+The MCC lookup tool lets you search the database by merchant name or category keyword and see the code, category, industry, and a list of similar merchants for each result.
+
+<Tip>
+  Search by category type rather than a specific merchant name when you are not sure of the exact name. For example, searching "grocery" returns all grocery and supermarket MCCs, while "airline" returns flight-related codes. This is useful when you want to understand the category before selecting it in the reward calculator or best card finder.
+</Tip>
+
+## How it works
+
+<Steps>
+  <Step title="Type a search query">
+    Enter at least 2 characters in the search bar. The field accepts:
+
+    - Merchant names (e.g. `Netflix`, `Amazon`, `Swiggy`)
+    - Category descriptions (e.g. `grocery`, `fuel`, `airline`)
+    - MCC codes directly (e.g. `5411`)
+
+    Results update automatically as you type (debounced at 500 ms).
+  </Step>
+  <Step title="Review the result cards">
+    Each matching MCC is displayed as a card showing:
+
+    - **MCC code** — the four-digit code
+    - **Merchant/category name**
+    - **Industry** — the broad industry group the MCC belongs to
+    - **Category** — the merchant category within that industry
+    - **Similar merchants** — up to 5 known merchants that typically fall under this MCC, with a `+N` chip for additional entries
+  </Step>
+  <Step title="Use the MCC in a calculation">
+    Copy the MCC code or note the category name, then use it in the [reward calculator](/features/reward-calculator) or [best card finder](/features/best-card-finder) to get an accurate earn-rate result for that type of spend.
+  </Step>
+</Steps>
+
+## How MCCs affect reward calculations
+
+When you select an MCC in the reward calculator or best card finder, the backend matches it against the card's reward rules. Cards with category-specific earn rates — such as accelerated points on dining or travel — will return a higher reward value than when no MCC is provided. Without an MCC the calculator falls back to the card's base (uncategorised) earn rate, which may understate the actual reward.
+
+## Reporting missing or incorrect data
+
+If you cannot find a merchant or notice incorrect information, use the **Report Issue** button at the bottom of the page to submit a correction. Reports are reviewed and used to improve the database for all users.
+
+## Background reading
+
+For a deeper explanation of how MCCs work and how card networks assign them, see [MCC concepts](/concepts/mcc).

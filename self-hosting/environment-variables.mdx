@@ -1,0 +1,122 @@
+---
+title: "Environment variables"
+description: "All environment variables required to run CCReward"
+---
+
+CCReward is configured through environment variables stored in a `.env.local` file in the project root. This file is excluded from version control by `.gitignore` and must be created manually on each machine or CI environment.
+
+<Warning>
+  All variables prefixed with `NEXT_PUBLIC_` are embedded into the client-side JavaScript bundle at build time and are visible to anyone who visits your site. Do not store secrets in these variables.
+</Warning>
+
+## .env.local template
+
+Create a `.env.local` file in the project root and populate it with your values:
+
+```bash
+# Firebase configuration (required)
+NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project.firebasestorage.app
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789
+NEXT_PUBLIC_FIREBASE_APP_ID=1:123456789:web:abc123
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_oauth_client_id
+
+# Cloudflare Images (required)
+NEXT_PUBLIC_CLOUDFLARE_IMAGES_ACCOUNT_HASH=your_cloudflare_images_account_hash
+
+# Optional: custom delivery domain instead of imagedelivery.net
+# NEXT_PUBLIC_CLOUDFLARE_IMAGES_DELIVERY_BASE_URL=https://imagedelivery.net/your_account_hash
+
+# API configuration (required for build and API calls)
+NEXT_PUBLIC_API_BASE_URL=https://api.ccreward.app
+
+# Required for the static data fetch script (prebuild step)
+STATIC_DATA_API_KEY=your_static_data_api_key
+```
+
+## Firebase variables
+
+All Firebase variables are obtained from the Firebase Console when you [add a web app to your project](/self-hosting/firebase-setup).
+
+<ParamField path="NEXT_PUBLIC_FIREBASE_API_KEY" type="string" required>
+  The Firebase project's web API key. Found in **Project settings** > **General** > **Your apps** > **SDK setup and configuration**.
+</ParamField>
+
+<ParamField path="NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN" type="string" required>
+  The OAuth redirect domain for Firebase Authentication. Typically `your-project-id.firebaseapp.com`.
+</ParamField>
+
+<ParamField path="NEXT_PUBLIC_FIREBASE_PROJECT_ID" type="string" required>
+  Your Firebase project's unique identifier. Used to connect to Firestore and other Firebase services.
+</ParamField>
+
+<ParamField path="NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET" type="string" required>
+  The Cloud Storage bucket name. Typically `your-project-id.firebasestorage.app`.
+</ParamField>
+
+<ParamField path="NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID" type="string" required>
+  The numeric sender ID used by Firebase Cloud Messaging.
+</ParamField>
+
+<ParamField path="NEXT_PUBLIC_FIREBASE_APP_ID" type="string" required>
+  The unique identifier for your Firebase web app registration. Format: `1:sender_id:web:hash`.
+</ParamField>
+
+<ParamField path="NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID" type="string">
+  The Google Analytics measurement ID linked to your Firebase project. Optional — omit if you disabled Analytics during project creation. Format: `G-XXXXXXXXXX`.
+</ParamField>
+
+<ParamField path="NEXT_PUBLIC_GOOGLE_CLIENT_ID" type="string" required>
+  The OAuth 2.0 client ID from Google Cloud Console. Required for Google Sign-in. Found in **Google Cloud Console** > **APIs & Services** > **Credentials**.
+</ParamField>
+
+## Cloudflare variables
+
+<ParamField path="NEXT_PUBLIC_CLOUDFLARE_IMAGES_ACCOUNT_HASH" type="string" required>
+  The account hash for your Cloudflare Images account. Used to construct image delivery URLs for credit card artwork. Found in the Cloudflare dashboard under **Images**.
+</ParamField>
+
+<ParamField path="NEXT_PUBLIC_CLOUDFLARE_IMAGES_DELIVERY_BASE_URL" type="string">
+  Optional. A custom delivery base URL for Cloudflare Images. Defaults to `https://imagedelivery.net/your_account_hash` if omitted. Set this if you have configured a custom delivery domain in Cloudflare.
+
+  Example: `https://imagedelivery.net/your_cloudflare_images_account_hash`
+</ParamField>
+
+## API variables
+
+<ParamField path="NEXT_PUBLIC_API_BASE_URL" type="string" required>
+  The base URL for the CCReward backend API. All API requests are sent to this origin. Used by both the client-side API service (`src/core/services/api.js`) and the static data fetch script (`scripts/fetch-static-data.js`).
+
+  Example: `https://api.ccreward.app`
+</ParamField>
+
+<ParamField path="STATIC_DATA_API_KEY" type="string">
+  API key for the static data fetch script (`npm run fetch-data`). This script runs automatically as part of the `build`, `deploy:dev`, and `deploy:prod` commands.
+
+  If this variable is not set, the fetch script will exit with a warning and skip downloading static data files. The build will still succeed, but card and bank data may be missing or stale.
+
+  This key is **not** prefixed with `NEXT_PUBLIC_` and is never exposed to the browser.
+</ParamField>
+
+## Validating your configuration
+
+The `src/envValidator.js` module checks for required variables at startup. If any are missing, it logs a warning:
+
+```
+[Config] Missing Firebase/Google env vars. Auth features may be unavailable.
+```
+
+Required variables validated at runtime:
+
+- `NEXT_PUBLIC_FIREBASE_API_KEY`
+- `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
+- `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
+- `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
+- `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
+- `NEXT_PUBLIC_FIREBASE_APP_ID`
+- `NEXT_PUBLIC_GOOGLE_CLIENT_ID`
+
+After updating `.env.local`, restart the development server for changes to take effect.

@@ -1,0 +1,59 @@
+---
+title: "Reward calculator"
+description: "Calculate exact reward points, cashback, or miles for any transaction"
+---
+
+The reward calculator tells you exactly how many points, cashback rupees/dollars, or miles you earn when you spend a given amount on a specific credit card. It supports cards from India and Singapore, handles foreign currency transactions, and asks card-specific questions when a card's earn rate depends on additional context.
+
+## How it works
+
+<Steps>
+  <Step title="Select a bank">
+    Choose your issuing bank from the dropdown. The list is filtered to your active region (India or Singapore).
+  </Step>
+  <Step title="Select a card">
+    After choosing a bank, the card dropdown populates with that bank's supported cards. Select the card you want to calculate rewards for.
+  </Step>
+  <Step title="Search for an MCC (optional)">
+    Type at least 2 characters in the MCC field to search by merchant name, category description, or MCC code. Select the matching entry to tie the calculation to a specific merchant category.
+
+    <Note>
+      Providing an MCC improves accuracy. Some cards offer bonus rates for specific categories (e.g. dining, travel, fuel) — without an MCC the calculator uses the card's base earn rate. See [MCC lookup](/features/mcc-lookup) to find the right code before calculating.
+    </Note>
+  </Step>
+  <Step title="Enter the transaction amount">
+    Type the amount you spent. Use the currency selector next to the amount field to switch between local currency and a foreign currency. When a foreign currency is selected, the API converts the amount using current exchange rates before applying the card's earn formula.
+  </Step>
+  <Step title="Answer card-specific prompts (if shown)">
+    Some cards require additional context to calculate the correct reward. These prompts appear automatically after you select the card and may ask things like your card tier, the spend category, or other card-level options. Wait for the prompts to finish loading before clicking **Calculate**.
+  </Step>
+  <Step title="Click Calculate">
+    Click the **Calculate** button. The result appears below the form showing your earned reward.
+  </Step>
+</Steps>
+
+## Understanding the results
+
+After a successful calculation, the results panel shows a reward summary string such as:
+
+- `"You earn 150 points"` — points-based rewards
+- `"You earn ₹75 cashback"` — cashback rewards
+- `"You earn 200 miles"` — miles-based rewards
+
+If the card earns nothing for the selected spend (for example, excluded categories), the result reads **No rewards earned**.
+
+When you enter a foreign currency amount, a currency conversion note appears below the result showing the exchange rate used.
+
+## Usage limits
+
+Each feature on CCReward has a daily free-tier limit. The reward calculator allows **10 calculations per day** on the web. A usage badge in the top-right corner of the calculator panel shows how many calculations you have remaining.
+
+Once the daily limit is reached, a warning message appears and the **Calculate** button is disabled until the next day. Download the CCReward app for a higher limit.
+
+## After calculating
+
+Once a result appears you can:
+
+- **Add to My Cards** — if you are signed in, a button lets you save the card you just calculated for to your portfolio. See [My Cards](/features/my-cards).
+- **Report an issue** — use the report buttons to flag a missing bank/card or an incorrect reward value.
+- **Recalculate** — change any field and click **Calculate** again. If nothing has changed since the last calculation the request is skipped to avoid wasting your daily quota.

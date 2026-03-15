@@ -1,0 +1,101 @@
+---
+title: "Regions"
+description: "CCReward supports India and Singapore, each with their own set of banks, cards, and reward structures"
+---
+
+CCReward is a region-aware application. Your selected region controls which banks, cards, and reward data are available throughout the app. All API calls include the region as a parameter, so the data returned is always specific to your selected country.
+
+<Note>
+  Your region affects every calculation and card list in CCReward. If you switch regions, the bank and card dropdowns reset and reload data for the new region.
+</Note>
+
+## Supported regions
+
+| Region | Code |
+| --- | --- |
+| India | `IN` |
+| Singapore | `SG` |
+
+## How region detection works
+
+When you open CCReward for the first time, the app determines your region through the following steps, in order:
+
+1. **URL parameter** — If the URL includes a `region` query parameter (e.g. `?region=IN`), that value is used immediately. This takes the highest priority and is useful for shared links.
+2. **Saved preference** — If you have previously selected a region, it is read from `localStorage` under the key `app-region` and applied.
+3. **Geo-detection** — If no saved preference exists, CCReward calls `/_geo`, a Cloudflare Worker endpoint that returns your country code using Cloudflare's built-in geo data. Your IP is not sent to any third party. If your country matches a supported region (`IN` or `SG`), it is applied automatically.
+4. **Manual selection** — If geo-detection fails or returns an unsupported country, a region selection prompt is shown. You must choose India or Singapore to continue.
+
+## Region storage
+
+Your region is stored in `localStorage` under two keys:
+
+| Key | Value |
+| --- | --- |
+| `app-region` | Region code: `IN` or `SG` |
+| `user-set-region` | `"true"` if you selected manually, `"false"` if auto-detected |
+
+The app reads `app-region` on every API request to scope results to your region. If this key is absent, API calls are blocked and a region initialization error is shown.
+
+## Switching regions
+
+You can change your region at any time using the region selector in the app. Switching regions:
+
+- Saves the new value to `localStorage`
+- Clears the current bank, card, and MCC selections
+- Reloads the bank list for the new region
+- Dispatches a `region-changed` event that other parts of the app listen to
+
+## Supported banks by region
+
+<Tabs>
+  <Tab title="India">
+    CCReward supports cards from the following banks in India:
+
+    | Bank |
+    | --- |
+    | AMEX |
+    | AU |
+    | Axis |
+    | BOB |
+    | Canara |
+    | DBS |
+    | Equitas |
+    | Federal |
+    | HDFC |
+    | HSBC |
+    | ICICI |
+    | IDBI |
+    | IDFCFirst |
+    | IndusInd |
+    | Kotak |
+    | OneCard |
+    | PNB |
+    | RBL |
+    | SBI |
+    | SBM |
+    | SC |
+    | Union |
+    | YesBank |
+  </Tab>
+  <Tab title="Singapore">
+    CCReward supports cards from the following banks in Singapore:
+
+    | Bank |
+    | --- |
+    | AMEX |
+    | BOC |
+    | CIMB |
+    | Citi |
+    | DBS |
+    | DCS |
+    | GXS |
+    | HSBC |
+    | Maribank |
+    | Maybank |
+    | OCBC |
+    | POSB |
+    | SC |
+    | TrustBank |
+    | UOB |
+  </Tab>
+</Tabs>

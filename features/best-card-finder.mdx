@@ -1,0 +1,64 @@
+---
+title: "Best card finder"
+description: "Compare all your cards at once to find the highest-earning option for any spend"
+---
+
+The best card finder runs a single transaction through every card in your portfolio simultaneously and returns a ranked list showing which card earns the most. Use it before a large purchase to make sure you pick the most rewarding card.
+
+<Tip>
+  Run the best card finder before any significant purchase — groceries, flights, hotel bookings — to identify which card maximises your return without having to check each card individually.
+</Tip>
+
+## Prerequisites
+
+You need at least **two cards** saved in [My Cards](/features/my-cards) to compare. If you have fewer than two cards, the tool prompts you to add more before you can calculate.
+
+You do not need to add cards to My Cards before using the tool — you can also select cards directly inside the tool when signed in — but saving them to your portfolio means they are pre-loaded every time you open the page.
+
+## How it works
+
+<Steps>
+  <Step title="Open the best card finder">
+    Navigate to the best card finder page. Your saved cards are loaded automatically if you are signed in.
+  </Step>
+  <Step title="Search for an MCC (optional)">
+    Type at least 2 characters in the merchant/MCC search field to filter the calculation to a specific spend category. The field searches by merchant name, category description, or MCC code.
+  </Step>
+  <Step title="Enter the transaction amount">
+    Enter the amount and select a currency. Foreign currency amounts are converted to the local currency before the earn rates are applied.
+  </Step>
+  <Step title="Set advanced options (optional)">
+    Expand **Advanced Mode** to answer card-specific questions for any cards that require additional context. Questions are filtered by the MCC you selected — only relevant prompts are shown.
+  </Step>
+  <Step title="Click Calculate Best Card">
+    Click **Calculate Best Card**. The tool calls the backend with all your cards in a single request and returns three ranked lists.
+  </Step>
+  <Step title="Review the ranked results">
+    Results appear as a ranked list with the top card highlighted in green. Use the toggle buttons to switch between three sort views:
+
+    - **Ranking by Points/Cashback** — sorted by raw points or cashback amount
+    - **Ranking by Value** — sorted by estimated monetary value in local currency
+    - **Ranking by Miles** — sorted by equivalent miles earned
+  </Step>
+</Steps>
+
+## How cards are ranked
+
+The backend calculates the reward for each card independently using the same amount, currency, and MCC, then sorts the results in descending order. The card that earns the most sits at position 1 and is displayed with a green background. Every subsequent card is listed in descending order of reward.
+
+Because each sort view (points, value, miles) uses a different unit, the ranking order may differ between views.
+
+## Usage limits
+
+The best card finder allows **10 comparisons per day** on the free web tier. A usage badge shows your remaining quota. The limit is enforced by the backend; once it is exhausted a warning message appears and the calculate button is disabled until the next day.
+
+## Related
+
+<CardGroup cols={2}>
+  <Card title="My Cards" icon="credit-card" href="/features/my-cards">
+    Add and manage the cards that appear in the best card finder.
+  </Card>
+  <Card title="MCC lookup" icon="search" href="/features/mcc-lookup">
+    Find the right merchant category code to use in the calculation.
+  </Card>
+</CardGroup>
