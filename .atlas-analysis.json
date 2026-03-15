@@ -1,0 +1,111 @@
+{
+  "projectType": "saas",
+  "projectName": "CCReward",
+  "projectDescription": "A consumer-facing web app that helps users in India and Singapore calculate, compare, and optimize credit card rewards across dozens of banks and cards.",
+  "theme": "almond",
+  "primaryColor": "#1565C0",
+  "lightColor": "#E3F2FD",
+  "darkColor": "#0D47A1",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Overview",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": ["introduction", "quickstart"]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/regions",
+              "concepts/mcc",
+              "concepts/reward-types"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Features",
+        "groups": [
+          {
+            "group": "Tools",
+            "pages": [
+              "features/reward-calculator",
+              "features/best-card-finder",
+              "features/transfer-calculator",
+              "features/mcc-lookup",
+              "features/my-cards"
+            ]
+          },
+          {
+            "group": "Supported Cards",
+            "pages": [
+              "cards/india",
+              "cards/singapore"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Self-Hosting",
+        "groups": [
+          {
+            "group": "Setup",
+            "pages": [
+              "self-hosting/prerequisites",
+              "self-hosting/installation",
+              "self-hosting/firebase-setup",
+              "self-hosting/environment-variables"
+            ]
+          },
+          {
+            "group": "Deployment",
+            "pages": [
+              "self-hosting/cloudflare-deployment",
+              "self-hosting/troubleshooting"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Contributing",
+        "groups": [
+          {
+            "group": "Development",
+            "pages": [
+              "contributing/overview",
+              "contributing/adding-banks-cards",
+              "contributing/reporting-issues"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Reward calculator with MCC-based accuracy for India and Singapore cards",
+    "Best card finder that ranks cards by reward value for a given spend",
+    "Points transfer calculator for airline/hotel loyalty program transfers",
+    "MCC lookup tool to identify merchant category codes",
+    "My Cards portfolio management with Firebase authentication",
+    "Support for 20+ banks in India and 15+ banks in Singapore",
+    "Dark mode and responsive design for desktop and mobile",
+    "Mobile apps available on iOS and Android"
+  ],
+  "publicApiSurface": [
+    "fetchBanks() — fetch all banks for the current region",
+    "fetchCards(bank) — fetch cards for a specific bank",
+    "fetchMCC(search) — search merchant category codes",
+    "calculateRewards(data) — POST /v4/calculateRewards",
+    "calculateBestCard(data) — POST /v4/calculateBestCard",
+    "calculateTransferPartners(data) — POST /v4/transfer",
+    "fetchCardDetails(bank, card, country) — GET /v4/card/detail",
+    "fetchCardGoals(bank, card, country) — GET /v4/goals",
+    "addUserCard(cardData) — POST /v4/user/cards",
+    "updateUserCard(cardData) — PATCH /v4/user/cards",
+    "deleteUserCard({bank, cardName, country}) — DELETE /v4/user/cards",
+    "getUserCards(country) — GET /v4/user/cards",
+    "bulkSyncUserCards({cards, country}) — PUT /v4/user/cards"
+  ]
+}
